@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useRef, useEffect, useCallback } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Button, Grid, Container, TextField, Avatar } from "@mui/material";
 import { Context } from "../index";
@@ -12,6 +12,12 @@ const Chat = () => {
     const [value, setValue] = useState("");
 
     const [messages, loading] = useCollectionData(firestore.collection("message").orderBy("createdAt"));
+
+    const myRef = useCallback((node) => {
+        if (node) {
+            node.scrollIntoView();
+        }
+    }, []);
 
     const sendMessage = async () => {
         firestore.collection("message").add({
@@ -48,11 +54,12 @@ const Chat = () => {
                         backgroundAttachment: "local",
                     }}
                 >
-                    {messages.map((message) => {
+                    {messages.map((message, idx, messages) => {
                         return (
                             <div
                                 key={message.createdAt}
                                 style={{
+                                    maxWidth: "70%",
                                     backgroundColor: "#fff",
                                     margin: 10,
                                     border: user.uid === message.uid ? "1px solid green" : "1px solid blue",
@@ -61,6 +68,7 @@ const Chat = () => {
                                     width: "fit-content",
                                     padding: 5,
                                 }}
+                                ref={idx === messages.length - 1 ? myRef : null}
                             >
                                 <Grid container>
                                     <Avatar src={message.photoURL} style={{ margin: 3 }} />

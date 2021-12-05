@@ -5,7 +5,7 @@ import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
 
-const firebaseApp = firebase.initializeApp({
+firebase.initializeApp({
     apiKey: "AIzaSyBqHcPcgfPrjuXOrrm4_Eb_00VLuUcUZsQ",
     authDomain: "react-chat-d61c1.firebaseapp.com",
     projectId: "react-chat-d61c1",

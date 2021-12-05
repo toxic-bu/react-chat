@@ -35,16 +35,18 @@ const Chat = () => {
     return (
         <Container>
             <Grid
-                container
+                xs={12}
+                md={8}
+                item
                 style={{
                     height: window.innerHeight - 70,
-                    marginTop: "20px",
+
+                    margin: "20px auto 0",
                 }}
                 justifyContent="center"
             >
                 <div
                     style={{
-                        width: "80%",
                         height: "70vh",
                         border: "1px solid gray",
                         overflowY: "auto",
@@ -79,7 +81,7 @@ const Chat = () => {
                         );
                     })}
                 </div>
-                <Grid container direction="column" alignItems="flex-end" style={{ width: "80%" }}>
+                <Grid container direction="column" alignItems="flex-end" style={{ padding: 20 }}>
                     <TextField
                         variant={"outlined"}
                         fullWidth

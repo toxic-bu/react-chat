@@ -22,7 +22,7 @@ const firestore = firebase.firestore();
 ReactDOM.render(
     <Context.Provider
         value={{
-            firebaseApp,
+            firebase,
             auth,
             firestore,
         }}

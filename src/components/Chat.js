@@ -5,6 +5,7 @@ import { Context } from "../index";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { collection, query, orderBy, addDoc, serverTimestamp, getDocs } from "firebase/firestore";
 import Loader from "./Loader";
+import background from "../tyan2.jpg";
 const Chat = () => {
     const { auth, firestore } = useContext(Context);
     const [user] = useAuthState(auth);
@@ -27,13 +28,32 @@ const Chat = () => {
     }
     return (
         <Container>
-            <Grid container style={{ height: window.innerHeight - 70, marginTop: "20px" }} justifyContent="center">
-                <div style={{ width: "80%", height: "70vh", border: "1px solid gray", overflowY: "auto" }}>
+            <Grid
+                container
+                style={{
+                    height: window.innerHeight - 70,
+                    marginTop: "20px",
+                }}
+                justifyContent="center"
+            >
+                <div
+                    style={{
+                        width: "80%",
+                        height: "70vh",
+                        border: "1px solid gray",
+                        overflowY: "auto",
+                        backgroundImage: `url(${background})`,
+                        backgroundSize: "100% auto",
+                        backgroundRepeat: "repeat-y",
+                        backgroundAttachment: "local",
+                    }}
+                >
                     {messages.map((message) => {
                         return (
                             <div
                                 key={message.createdAt}
                                 style={{
+                                    backgroundColor: "#fff",
                                     margin: 10,
                                     border: user.uid === message.uid ? "1px solid green" : "1px solid blue",
                                     borderRadius: "5px",

@@ -1,4 +1,4 @@
-import React, { useContext, useState, useRef, useEffect, useCallback } from "react";
+import React, { useContext, useState, useCallback } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Button, Grid, Container, TextField, Avatar } from "@mui/material";
 import { Context } from "../index";

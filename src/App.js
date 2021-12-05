@@ -10,6 +10,7 @@ const App = () => {
     const { auth } = useContext(Context);
     const [user, loading] = useAuthState(auth);
     if (loading) {
+        console.log(user);
         return <Loader />;
     }
     return (

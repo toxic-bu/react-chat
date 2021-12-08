@@ -10,7 +10,6 @@ const Chat = () => {
     const { auth, firestore } = useContext(Context);
     const [user] = useAuthState(auth);
     const [value, setValue] = useState("");
-
     const [messages, loading] = useCollectionData(firestore.collection("message").orderBy("createdAt"));
 
     const myRef = useCallback((node) => {
@@ -40,7 +39,6 @@ const Chat = () => {
                 item
                 style={{
                     height: window.innerHeight - 70,
-
                     margin: "20px auto 0",
                 }}
                 justifyContent="center"
@@ -64,11 +62,12 @@ const Chat = () => {
                                     maxWidth: "70%",
                                     backgroundColor: "#fff",
                                     margin: 10,
-                                    border: user.uid === message.uid ? "1px solid green" : "1px solid blue",
+                                    border: user?.uid === message.uid ? "1px solid green" : "1px solid blue",
                                     borderRadius: "5px",
-                                    marginLeft: user.uid === message.uid ? "auto" : "10px",
+                                    marginLeft: user?.uid === message.uid ? "auto" : "10px",
                                     width: "fit-content",
                                     padding: 5,
+                                    wordWrap: "break-word",
                                 }}
                                 ref={idx === messages.length - 1 ? myRef : null}
                             >

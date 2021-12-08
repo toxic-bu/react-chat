@@ -1,41 +1,41 @@
 import React, { useContext, useState } from "react";
+import { Button, Grid, Container, TextField, Typography, Box } from "@mui/material";
+import { LOGIN_ROUTE } from "../utils/consts";
 import { NavLink } from "react-router-dom";
-import { Button, Grid, Container, Avatar, Typography } from "@mui/material";
-import Box from "@mui/material/Box";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { Context } from "../index";
-import GoogleIcon from "@mui/icons-material/Google";
-import TextField from "@mui/material/TextField";
-import { GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword } from "firebase/auth";
-import { CREATE_USER_ROUTE } from "../utils/consts";
-const Login = () => {
+
+const CreateUser = () => {
     const { auth } = useContext(Context);
     const [mail, setMail] = useState("");
     const [pass, setPass] = useState("");
-    const [msg, setMsg] = useState("Enter e-mail and password");
+    const [name, setName] = useState("");
+    const [msg, setMsg] = useState("Enter e-mail, password and public name");
 
-    const loginGoogle = async () => {
-        const provider = new GoogleAuthProvider();
-        const { user } = await signInWithPopup(auth, provider);
-        console.log(user);
-    };
-    const loginEmailPass = async (e) => {
+    const createUser = (e) => {
         e.preventDefault();
-
-        if (mail && pass) {
-            signInWithEmailAndPassword(auth, e.target.mail.value, e.target.pass.value)
-                .then()
+        if (mail && pass && name) {
+            createUserWithEmailAndPassword(auth, e.target.mail.value, e.target.pass.value)
+                .then(() => {
+                    updateProfile(auth.currentUser, {
+                        displayName: name,
+                    })
+                        .then(() => {})
+                        .catch((error) => {
+                            setMsg(error.message);
+                        });
+                })
                 .catch((error) => {
-                    console.log(error);
                     setMsg(error.message);
                 });
         } else {
-            setMsg("Wrong e-mail or password");
+            setMsg("Enter a valid information");
         }
     };
     return (
         <Container>
             <Grid container style={{ height: window.innerHeight - 50 }} justifyContent="center" alignItems="center">
-                <Grid style={{ width: "auto" }} container alignItems="center" direction="column">
+                <Grid style={{ width: "auto" }}>
                     <Box
                         border="1px solid gray"
                         borderRadius={1}
@@ -44,15 +44,15 @@ const Login = () => {
                         alignItems="center"
                         sx={{ px: 3, py: 2, boxShadow: 2, width: { sm: 500 } }}
                     >
-                        <form onSubmit={loginEmailPass} style={{ textAlign: "center", marginBottom: 10, width: "50%" }}>
+                        <form onSubmit={createUser} style={{ textAlign: "center", marginBottom: 10, width: "50%" }}>
                             <Typography variant="h5" paragraph>
-                                Вход
+                                Регистрация
                             </Typography>
                             {
                                 <Typography
                                     variant="caption"
                                     sx={{
-                                        maxWidth: "500px",
+                                        maxWidth: "700px",
                                         mx: "auto",
                                         overflow: "hidden",
                                     }}
@@ -68,7 +68,10 @@ const Login = () => {
                                 sx={{ mb: 1 }}
                                 value={mail}
                                 fullWidth
-                                onChange={(e) => setMail(e.target.value)}
+                                type="text"
+                                onChange={(e) => {
+                                    setMail(e.target.value);
+                                }}
                             ></TextField>
                             <TextField
                                 name="pass"
@@ -78,32 +81,32 @@ const Login = () => {
                                 value={pass}
                                 fullWidth
                                 type="password"
-                                onChange={(e) => setPass(e.target.value)}
+                                onChange={(e) => {
+                                    setPass(e.target.value);
+                                }}
                             ></TextField>
-                            <NavLink to={CREATE_USER_ROUTE} style={{ textDecoration: "none" }}>
-                                <Button variant={"outlined"} size="small" sx={{ mr: 2 }}>
-                                    Регистрация
-                                </Button>
-                            </NavLink>
+                            <TextField
+                                name="name"
+                                label="Name"
+                                size="small"
+                                sx={{ mb: 1 }}
+                                value={name}
+                                fullWidth
+                                type="text"
+                                onChange={(e) => {
+                                    setName(e.target.value);
+                                }}
+                            ></TextField>
                             <Button type="submit" size="small" variant="contained">
-                                войти
+                                зарегистрироваться
                             </Button>
+                            <Typography variant="body2">
+                                Уже есть аккаунт?
+                                <NavLink to={LOGIN_ROUTE} style={{ textDecoration: "none" }}>
+                                    <Typography variant="caption"> Войти</Typography>
+                                </NavLink>
+                            </Typography>
                         </form>
-
-                        <Avatar
-                            onClick={loginGoogle}
-                            color="success"
-                            variant={"outlined"}
-                            sx={{
-                                mx: "auto",
-                                width: 30,
-                                height: 30,
-                                bgcolor: "#ff4d4d",
-                                "&:hover": { cursor: "pointer" },
-                            }}
-                        >
-                            <GoogleIcon />
-                        </Avatar>
                     </Box>
                 </Grid>
             </Grid>
@@ -111,4 +114,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default CreateUser;

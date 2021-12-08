@@ -1,6 +1,6 @@
 import React, { useContext, useState, useCallback } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { Button, Grid, Container, TextField, Avatar } from "@mui/material";
+import { Button, Grid, Container, TextField, Avatar, Typography } from "@mui/material";
 import { Context } from "../index";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { serverTimestamp } from "firebase/firestore";
@@ -18,14 +18,17 @@ const Chat = () => {
         }
     }, []);
 
-    const sendMessage = async () => {
-        firestore.collection("message").add({
-            uid: user.uid,
-            displayName: user.displayName,
-            photoUrl: user.photoURL,
-            text: value,
-            createdAt: serverTimestamp(),
-        });
+    const sendMessage = async (e) => {
+        e.preventDefault();
+        if (value) {
+            firestore.collection("message").add({
+                uid: user.uid,
+                displayName: user.displayName,
+                photoUrl: user.photoURL,
+                text: value,
+                createdAt: serverTimestamp(),
+            });
+        }
         setValue("");
     };
     if (loading) {
@@ -71,26 +74,39 @@ const Chat = () => {
                                 }}
                                 ref={idx === messages.length - 1 ? myRef : null}
                             >
-                                <Grid container>
-                                    <Avatar src={message.photoURL} style={{ margin: 3 }} />
-                                    <div>{message.displayName}</div>
+                                <Grid container alignItems="center">
+                                    <Avatar
+                                        sx={{
+                                            mx: "auto",
+                                            width: 20,
+                                            height: 20,
+                                            bgcolor: "#ff4d4d",
+                                        }}
+                                        src={message.photoURL}
+                                        style={{ margin: 3 }}
+                                    />
+                                    <Typography variant="caption" sx={{ fontWeight: "bold", fontSize: "0.6em" }}>
+                                        {message.displayName}
+                                    </Typography>
                                 </Grid>
-                                <div>{message.text}</div>
+                                <Typography variant="caption">{message.text}</Typography>
                             </div>
                         );
                     })}
                 </div>
-                <Grid container direction="column" alignItems="flex-end" style={{ padding: 20 }}>
-                    <TextField
-                        variant={"outlined"}
-                        fullWidth
-                        maxRows={2}
-                        value={value}
-                        onChange={(e) => setValue(e.target.value)}
-                    />
-                    <Button variant={"outlined"} onClick={sendMessage}>
-                        Отправить
-                    </Button>
+                <Grid container style={{ padding: 20 }} flexDirection="row">
+                    <form onSubmit={sendMessage} style={{ width: "100%", textAlign: "end" }}>
+                        <TextField
+                            variant={"outlined"}
+                            fullWidth
+                            maxRows={2}
+                            value={value}
+                            onChange={(e) => setValue(e.target.value)}
+                        />
+                        <Button type="submit" variant={"outlined"}>
+                            Отправить
+                        </Button>
+                    </form>
                 </Grid>
             </Grid>
         </Container>

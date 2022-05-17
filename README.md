@@ -2,10 +2,10 @@
 
 ### Stack
 - React
-- Firebase
-
+- Material UI
 
 ### Features
+- Firebase
 - Registration
 - Authorization
 

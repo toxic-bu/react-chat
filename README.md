@@ -1,7 +1,11 @@
 ## Public chat
 
-### Features
+### Stack
+- React
 - Firebase
+
+
+### Features
 - Registration
 - Authorization
 

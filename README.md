@@ -1,5 +1,7 @@
-# Public chat
-## Features
+## Public chat
+
+### Features
 Firebase, Registration, Authorization
-## Deployed
+
+### Deployed
 https://react-chat-lemon.vercel.app/
